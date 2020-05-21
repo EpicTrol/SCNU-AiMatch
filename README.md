@@ -6,12 +6,18 @@
 + https://github.com/dee1024/pytorch-captcha-recognition
   >作者的model是一个五层CNN，经过多次调参，测试集准确率最高到50%。
    模型（五层CNN）可能过于简单（也可能调参不够好），于是将模型换为了34层的残差网络res34-net，达到了测试集上86%的准确率：1W例训练集、1000例测试集、15-30个epoch、64大小batch_size、学习率0.0002，loss最终在0.001左右。
-
++ https://github.com/ypwhs/baiduyun_deeplearning_competition
+  
+  >本代码来自群里的示例代码 根据这个作者修改的
+  >
+  >主要环境：tensorflow keras 所用模块：pillow h5py pillow captcha
+  
++ 
 ## 具体步骤：
 
 ### 文件大致结构
 
-将压缩包解压后大致为这样的目录
+将压缩包解压后大致为这样的目录，训练集2w张图片，测试集1w张图片
 
 ```
 ├─test
