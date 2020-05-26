@@ -44,3 +44,4 @@ def decode(vec):
 if __name__ == '__main__':
     e = encode("BK7H")
     print(decode(e))
+    
