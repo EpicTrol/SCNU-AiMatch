@@ -48,3 +48,4 @@ if __name__ == '__main__':
     torch.save(cnn.state_dict(), "model.pkl")               #current is model.pkl
     print("save last model")
 
+    
