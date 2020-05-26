@@ -43,3 +43,4 @@ class CNN(nn.Module):
         out = self.rfc(out)
         return out
 
+    
