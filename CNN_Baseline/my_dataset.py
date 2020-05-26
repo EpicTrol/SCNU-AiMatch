@@ -27,6 +27,7 @@ class mydataset(Dataset):
         label = ohe.encode(image_name.split('.')[0]) # 为了方便，在生成图片的时候，图片文件的命名格式 "4个数字或者数字_时间戳.PNG", 4个字母或者即是图片的验证码的值，字母大写,同时对该值做 one-hot 处理
         return image, label
 
+
 transform = transforms.Compose([
     # transforms.ColorJitter(),
     # transforms.Grayscale(),
@@ -42,9 +43,14 @@ def get_test_data_loader():
     dataset = mydataset(captcha_setting.TEST_DATASET_PATH, transform=transform)
     return DataLoader(dataset, batch_size=1, shuffle=True)
 
+# def get_predict_data_loader():
+#     dataset = mydataset(captcha_setting.PREDICT_DATASET_PATH, transform=transform)
+#     return DataLoader(dataset, batch_size=1, shuffle=False)
+
+'''这个方法不用了，Predict模块自写了顺序遍历'''
 def get_predict_data_loader():
     dataset = mydataset(captcha_setting.PREDICT_DATASET_PATH, transform=transform)
-    return DataLoader(dataset, batch_size=1, shuffle=True)
+    return DataLoader(dataset, batch_size=1, shuffle=False)
 
 if __name__ == "__main__":
     # train_loader = get_train_data_loader()
@@ -62,8 +68,7 @@ if __name__ == "__main__":
     #         break
 
     test_loader = get_test_data_loader()
-    for i, (im, lb) in  enumerate(test_loader):
+    for i, (im, lb) in enumerate(test_loader):
         print(i, im[i].shape, lb[i].shape)
 
         if i == 0: break
-           
