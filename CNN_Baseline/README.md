@@ -1,8 +1,9 @@
 快速开始
 ====
 - __步骤一：10分钟环境安装__
-
-    Python3.7 、ImageCaptcha库(pip install captcha)、 Pytorch(参考官网http://pytorch.org)
+    
+    我的环境：
+    Python==3.7 、torch==1.5.0、torchvision==0.6.0
 
 - __步骤二：训练模型__
     ```bash
