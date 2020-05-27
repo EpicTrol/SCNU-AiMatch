@@ -19,7 +19,7 @@ class mydataset(Dataset):
     def __init__(self, folder, transform=None):
         self.train_image_file_paths = [os.path.join(folder, image_file).replace('\\','/') for image_file in os.listdir(folder)]
         # print('train_image_file_paths:',self.train_image_file_paths)
-        csv_path=os.path.join(folder,'train_label.csv').replace('\\','/') #dataset/train/train_label.csv
+        csv_path= 'dataset/train_label.csv'# os.path.join(folder,'train_label.csv').replace('\\','/') #dataset/train/train_label.csv
         data=pd.read_csv(csv_path)
         self.labels=np.array(data['label'])
         self.transform = transform
