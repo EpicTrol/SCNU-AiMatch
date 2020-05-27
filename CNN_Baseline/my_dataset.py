@@ -34,11 +34,14 @@ class mydataset(Dataset):
         if self.transform is not None:
             image = self.transform(image)
         '''版本1：当图片文件名为标签名称时，通过'.'分割取出每张图片的标签存入label
-        image_name = image_root.split(os.path.sep)[-1]
+        image_name = image_root.split('/')[-1]
         label = ohe.encode(image_name.split('.')[0]) # 为了方便，在生成图片的时候，图片文件的命名格式 "4个数字或者数字_时间戳.PNG", 4个字母或者即是图片的验证码的值，字母大写,同时对该值做 one-hot 处理
         '''
         # 版本2 保留原有的数据格式，通过csv文件获取每张图片标签而不用对每张图片进行重命名打上标签
-        label=ohe.encode(self.labels[idx])
+        image_name = image_root.split('/')[-1] #xxxx.jpg
+        image_num = image_name.split('.')[0] # 第xxxx张图片
+        #print('图片名称',image_name,self.labels[int(image_num)-1])
+        label=ohe.encode(self.labels[int(image_num)-1])
         return image, label
 
 
