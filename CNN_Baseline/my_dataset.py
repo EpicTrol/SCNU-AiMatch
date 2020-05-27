@@ -8,6 +8,7 @@ import captcha_setting
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 split_rate = 0.1        # 划分训练集和测试集的比率
 
@@ -16,7 +17,11 @@ torch.manual_seed(1)
 class mydataset(Dataset):
 
     def __init__(self, folder, transform=None):
-        self.train_image_file_paths = [os.path.join(folder, image_file) for image_file in os.listdir(folder)]
+        self.train_image_file_paths = [os.path.join(folder, image_file).replace('\\','/') for image_file in os.listdir(folder)]
+        # print('train_image_file_paths:',self.train_image_file_paths)
+        csv_path=os.path.join(folder,'train_label.csv').replace('\\','/') #dataset/train/train_label.csv
+        data=pd.read_csv(csv_path)
+        self.labels=np.array(data['label'])
         self.transform = transform
 
     def __len__(self):
@@ -24,12 +29,16 @@ class mydataset(Dataset):
 
     def __getitem__(self, idx):
         image_root = self.train_image_file_paths[idx]
-        image_name = image_root.split(os.path.sep)[-1]
         image = Image.open(image_root)
         image = image.resize((120, 40), Image.BICUBIC)      # 105*35 -> 120*40
         if self.transform is not None:
             image = self.transform(image)
+        '''版本1：当图片文件名为标签名称时，通过'.'分割取出每张图片的标签存入label
+        image_name = image_root.split(os.path.sep)[-1]
         label = ohe.encode(image_name.split('.')[0]) # 为了方便，在生成图片的时候，图片文件的命名格式 "4个数字或者数字_时间戳.PNG", 4个字母或者即是图片的验证码的值，字母大写,同时对该值做 one-hot 处理
+        '''
+        # 版本2 保留原有的数据格式，通过csv文件获取每张图片标签而不用对每张图片进行重命名打上标签
+        label=ohe.encode(self.labels[idx])
         return image, label
 
 
