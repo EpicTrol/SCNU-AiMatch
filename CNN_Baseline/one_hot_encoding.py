@@ -43,5 +43,5 @@ def decode(vec):
 
 if __name__ == '__main__':
     e = encode("BK7H")
+    print(e[62:124])
     print(decode(e))
-    

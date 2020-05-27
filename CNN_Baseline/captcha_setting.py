@@ -17,7 +17,6 @@ IMAGE_HEIGHT = 40
 IMAGE_WIDTH = 120
 
 # 训练集、测试集、预测集的路径
-# TRAIN_DATASET_PATH = 'dataset' + os.path.sep + 'train'
-TRAIN_DATASET_PATH = 'train_4'
+TRAIN_DATASET_PATH = 'dataset' + os.path.sep + 'train'
 TEST_DATASET_PATH = 'dataset' + os.path.sep + 'test'
 PREDICT_DATASET_PATH = 'dataset' + os.path.sep + 'predict'

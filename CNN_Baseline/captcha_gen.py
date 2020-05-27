@@ -32,4 +32,3 @@ if __name__ == '__main__':
         image.save(path  + os.path.sep +  filename)
         print('saved %d : %s' % (i+1,filename))
 
-

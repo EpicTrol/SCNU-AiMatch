@@ -6,21 +6,22 @@ import captcha_setting
 import my_dataset
 from captcha_cnn_model import CNN
 import one_hot_encoding
+from captcha_cnn2 import *
 
 def main():
-    cnn = CNN()
+    # cnn = CNN()
+    cnn = CNN2()
     cnn.eval()
     cnn.load_state_dict(torch.load('model.pkl'))
     print("load cnn net.")
 
     test_dataloader = my_dataset.get_test_data_loader()
-
+    print('Test Size:', len(test_dataloader.dataset))
     correct = 0
     total = 0
     for i, (images, labels) in enumerate(test_dataloader):
-        image = images
-        vimage = Variable(image)
-        predict_label = cnn(vimage)
+        # vimage = Variable(image)
+        predict_label = cnn(images)
 
         c0 = captcha_setting.ALL_CHAR_SET[np.argmax(predict_label[0, 0:captcha_setting.ALL_CHAR_SET_LEN].data.numpy())]
         c1 = captcha_setting.ALL_CHAR_SET[np.argmax(predict_label[0, captcha_setting.ALL_CHAR_SET_LEN:2 * captcha_setting.ALL_CHAR_SET_LEN].data.numpy())]
@@ -40,4 +41,3 @@ if __name__ == '__main__':
     main()
 
 
-    

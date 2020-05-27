@@ -10,6 +10,7 @@ import csv
 import one_hot_encoding as oht
 import os
 from my_dataset import *
+from captcha_cnn2 import *
 
 # 生成csv文件的路径
 csv_file = 'submission.csv'
@@ -21,7 +22,8 @@ def main():
     csv_writer = csv.writer(f)
     csv_writer.writerow(["ID","label"])
 
-    cnn = CNN()
+    # cnn = CNN()           # 采用模型1
+    cnn = CNN2()            # 采用模型2
     cnn.eval()
     cnn.load_state_dict(torch.load('model.pkl'))
     print("load cnn net.")
@@ -51,7 +53,7 @@ def main():
     pathDir.sort(key=lambda x: int(x[:-4]))
 
     for allDir in pathDir:
-        file = os.path.join('%s%s' % (pathDir, allDir))
+        file = os.path.join('%s%s' % ('dataset/predict/', allDir))
         fopen = Image.open(file)
 
         image = fopen.resize((120, 40), Image.BICUBIC)
