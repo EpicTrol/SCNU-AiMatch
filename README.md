@@ -64,10 +64,13 @@
 
 训练和提交结果
 ====
-| 模型         | Learning_rate | Epoch | Optimizer | Train:Test      | Accuracy(Test:Submit) |
+| Model        | Learning_rate | Epoch | Optimizer | Train:Test      | Accuracy(Test:Submit) |
 | ------------ | ------------- | ----- | --------- | --------------- | --------------------- |
 | CNN_baseline | 1e-3          | 30    | Adam      | 9:1(NotRandom)  | None/0.4018           |
-| VGG-16(Mini) | 5e-4          | 30    | Adam      | 9:1             | 81.00%/0.8141         |
+| VGG-16(Mini) | 5e-4          | 30    | Adam      | 9:1             | 81%/0.8141            |
+|              | 5e-4          | 100   | Adam      | 9:1             | 85%/0.8557            |
+| VGG-16       | 5e-4          | 100   | Adam      | 9:1             | 89.33%/0.9089         |
+| ResNet18     | 3e-4          | 100   | Adam      | 9:1             | 93.53%/0.9379         |
 
 
 
