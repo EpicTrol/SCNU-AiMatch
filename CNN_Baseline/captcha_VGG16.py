@@ -61,3 +61,4 @@ class CNN2(nn.Module):
 
     def model_name(self):
         return self.__class__.__name__
+    
