@@ -9,8 +9,11 @@ from captcha_cnn_model import CNN
 import csv
 import one_hot_encoding as oht
 import os
+import pandas as pd
+import datetime
 from my_dataset import *
-from captcha_cnn2 import *
+from captcha_VGG16 import *
+from captcha_resnet import ResNet18
 
 # 生成csv文件的路径
 csv_file = 'submission.csv'
@@ -18,19 +21,25 @@ csv_file = 'submission.csv'
 pathDir = os.listdir('dataset/predict/')
 
 def main():
-    f = open(csv_file, "w", newline='')
-    csv_writer = csv.writer(f)
-    csv_writer.writerow(["ID","label"])
+    # f = open(csv_file, "w", newline='')
+    # csv_writer = csv.writer(f)
+    # csv_writer.writerow(["ID","label"])
 
     # cnn = CNN()           # 采用模型1
-    cnn = CNN2()            # 采用模型2
+    # cnn = CNN2()            # 采用模型2
+    start_time = datetime.datetime.now()
+    cnn = ResNet18()
     cnn.eval()
-    cnn.load_state_dict(torch.load('model.pkl'))
+    
+    if torch.cuda.is_available():
+        cnn = cnn.cuda()
+    # cnn.load_state_dict(torch.load('model.pkl'))
+    cnn.load_state_dict(torch.load('./checkpoint/ckpt_res18_acc0.9520.pth')['model'])
     print("load cnn net.")
 
     # predict_dataloader = my_dataset.get_predict_data_loader()
 
-    #vis = Visdom()
+    # vis = Visdom()
     # for i, (images, labels) in enumerate(predict_dataloader):
     #     image = images
     #     print(image.shape)
@@ -51,7 +60,10 @@ def main():
 
     # 按照文件名（除去格式部分）排序
     pathDir.sort(key=lambda x: int(x[:-4]))
+    ID = pathDir
+    label = []
 
+    cal_start_time = datetime.datetime.now()
     for allDir in pathDir:
         file = os.path.join('%s%s' % ('dataset/predict/', allDir))
         fopen = Image.open(file)
@@ -59,23 +71,37 @@ def main():
         image = fopen.resize((120, 40), Image.BICUBIC)
         image = transform(image)
         image = torch.unsqueeze(image, dim=0)
+        if torch.cuda.is_available():
+            image = image.cuda()
 
         predict_label = cnn(image)
 
-        c0 = captcha_setting.ALL_CHAR_SET[np.argmax(predict_label[0, 0:captcha_setting.ALL_CHAR_SET_LEN].data.numpy())]
+        c0 = captcha_setting.ALL_CHAR_SET[np.argmax(predict_label[0, 0:captcha_setting.ALL_CHAR_SET_LEN].data.cpu().numpy())]
         c1 = captcha_setting.ALL_CHAR_SET[np.argmax(
-            predict_label[0, captcha_setting.ALL_CHAR_SET_LEN:2 * captcha_setting.ALL_CHAR_SET_LEN].data.numpy())]
+            predict_label[0, captcha_setting.ALL_CHAR_SET_LEN:2 * captcha_setting.ALL_CHAR_SET_LEN].data.cpu().numpy())]
         c2 = captcha_setting.ALL_CHAR_SET[np.argmax(
-            predict_label[0, 2 * captcha_setting.ALL_CHAR_SET_LEN:3 * captcha_setting.ALL_CHAR_SET_LEN].data.numpy())]
+            predict_label[0, 2 * captcha_setting.ALL_CHAR_SET_LEN:3 * captcha_setting.ALL_CHAR_SET_LEN].data.cpu().numpy())]
         c3 = captcha_setting.ALL_CHAR_SET[np.argmax(
-            predict_label[0, 3 * captcha_setting.ALL_CHAR_SET_LEN:4 * captcha_setting.ALL_CHAR_SET_LEN].data.numpy())]
-        label = '%s%s%s%s' % (c0, c1, c2, c3)
+            predict_label[0, 3 * captcha_setting.ALL_CHAR_SET_LEN:4 * captcha_setting.ALL_CHAR_SET_LEN].data.cpu().numpy())]
+        c = '%s%s%s%s' % (c0, c1, c2, c3)
 
-        ID = str(allDir)
-        csv_writer.writerow([ID, label])
-        print(ID, label)
+        label.append(c)
 
-    f.close()
+    cal_end_time = datetime.datetime.now()
+
+    df = pd.DataFrame([ID, label]).T
+    df.columns = ['ID', 'label']
+
+    df.to_csv(csv_file, index=None)
+
+    end_time = datetime.datetime.now()
+    print("Cal cost", cal_end_time - cal_start_time)
+    print("Total cost:", end_time - start_time)
+
+    #     csv_writer.writerow([ID, label])
+    #     print(ID, label)
+    #
+    # f.close()
 
 if __name__ == '__main__':
     main()
