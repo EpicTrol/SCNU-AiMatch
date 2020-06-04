@@ -64,18 +64,18 @@
 
 训练和提交结果
 ====
-| Model        | Learning_rate | Epoch | Optimizer | Train:Test      | Accuracy(Test:Submit) |
+| Model        | Learning_rate | Epoch | Optimizer | Train:Test      | Accuracy(Test:Submit:Final Submit) |
 | ------------ | ------------- | ----- | --------- | --------------- | --------------------- |
 | CNN_baseline | 1e-3          | 30    | Adam      | 9:1(NotRandom)  | None / 0.4018           |
 | VGG-16(Mini) | 5e-4          | 30    | Adam      | 9:1             | 81% / 0.8141            |
 |              | 5e-4          | 100   | Adam      | 9:1             | 85% / 0.8557            |
 | VGG-16       | 5e-4          | 100   | Adam      | 9:1             | 89.33% / 0.9089         |
 | ResNet18     | 3e-4          | 100   | Adam      | 9:1             | 93.53% / 0.9379         |
-|              | 3e-4+3e-5     | 100   | Adam      | 9:1             | 95.50% / 0.9520+0.9495         |
-|              | 3e-5          | 100   | RAdam     | 9:1             | 95.85% / 0.9548+0.9535         |
-| ResNet34     | 3e-4          | 100   | RAdam     | 9:1             | 95.80% / 0.9586+0.9562         |
-| ResNet34     | 1e-4          | 120   | RAdam     | 9:1             | 95.60% / 0.9612         |
-
+|              | 3e-4+3e-5     | 100   | Adam      | 9:1             | 95.50% / 0.9520/0.9495  |
+|              | 3e-5          | 100   | RAdam     | 9:1             | 95.85% / 0.9548/0.9535  |
+| ResNet34     | 3e-4          | 100   | RAdam     | 9:1             | 95.80% / 0.9586/0.9562  |
+| ResNet34     | 1e-4          | 120   | RAdam     | 9:1             | 95.60% / 0.9612/0.95740 |
+| ResNet34     | 1e-4+1e-5     | 120+30| RAdam     | 9:1             | null / null/0.95860     |
 
 更新日志
 ====
